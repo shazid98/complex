@@ -23,4 +23,3 @@ after_success:
   - docker push shazid98/multi-server
   - docker push shazid98/multi-worker
 
-  # Take those images and push them to docker hub
