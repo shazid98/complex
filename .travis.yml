@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t shazid98/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -shazid98/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t shazid98/multi-client ./client
+  - docker build -t shazid98/multi-server ./server
+  - docker build -t shazid98/multi-worker ./worker
+  - docker build -t shazid98/multi-nginx ./nginx
+
+  # Docker Login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Docker Push
+  - docker push shazid98/multi-client
+  - docker push shazid98/multi-server
+  - docker push shazid98/multi-worker
+  - docker push shazid98/multi-nginx
