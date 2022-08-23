@@ -23,4 +23,15 @@ after_success:
   - docker push shazid98/multi-server
   - docker push shazid98/multi-worker
 
-  # Another push with changed password; Ignore this if you are not using a docker hub account
+  # Deploy to AWS Elastic Beanstalk
+  deploy:
+  provider: elasticbeanstalk
+  region: 'eu-west-1'
+  app: 'multi-docker'
+  env: 'Multidocker-env'
+  bucket_name: 'elasticbeanstalk-eu-west-1-543838846513'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
